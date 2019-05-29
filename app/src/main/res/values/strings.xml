@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">YoutubeCookie</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="google_console_key">784421572736-7393k1df83kul1ttq44pu5n5nukldrgs.apps.googleusercontent.com</string>
+    <string name="login_title">Youtube Cookie App</string>
+    <string name="sumarize_login_text">enjoy youtube quiz</string>
+</resources>
