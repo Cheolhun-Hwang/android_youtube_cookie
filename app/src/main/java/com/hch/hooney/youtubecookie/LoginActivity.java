@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -22,6 +23,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.hch.hooney.youtubecookie.R;
+import com.hch.hooney.youtubecookie.apps.MyApplication;
+import com.hch.hooney.youtubecookie.vo.UserDo;
 
 public class LoginActivity extends AppCompatActivity {
     private final String TAG = LoginActivity.class.getSimpleName();
@@ -52,20 +55,38 @@ public class LoginActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        updateUI(currentUser);
+        checkAuth();
+    }
+
+    private void checkAuth() {
+        if(MyApplication.myUserDo == null){
+            MyApplication.myUserDo = new UserDo();
+            MyApplication.myUserDo.loadPref(getApplicationContext());
+            if(!MyApplication.myUserDo.getUid().equals("None")){
+                //기존 데이터 존재
+//            FirebaseUser currentUser = mAuth.getCurrentUser();
+                intentMainActivity();
+            }
+        }
+    }
+
+    private void intentMainActivity() {
+        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        finish();
     }
 
     private void updateUI(FirebaseUser currentUser) {
         if(currentUser != null){
-            Log.i(TAG, "Login : " +currentUser.getDisplayName());
-            Log.i(TAG, "Login email : " + currentUser.getEmail());
-            Log.i(TAG, "Login phone : " + currentUser.getPhoneNumber());
-            Log.i(TAG, "UID : " + currentUser.getUid());
-            Log.i(TAG, "Provide ID : " + currentUser.getProviderId());
-            Log.i(TAG, "Ava : " + currentUser.getPhotoUrl());
+            MyApplication.myUserDo.setUid(currentUser.getUid());
+            MyApplication.myUserDo.setEmail(currentUser.getEmail());
+            MyApplication.myUserDo.setNickname(currentUser.getDisplayName());
+            MyApplication.myUserDo.setAvaimg(currentUser.getPhotoUrl().toString());
+            MyApplication.myUserDo.savePref(getApplicationContext());
+            checkAuth();
         }else{
             Log.e(TAG, "Login Failed... User is NULL");
+            Toast.makeText(getApplicationContext(), "로그인에 실패하였습니다.\n잠시 후 다시 시도해주세요.",
+                    Toast.LENGTH_SHORT).show();
         }
     }
 

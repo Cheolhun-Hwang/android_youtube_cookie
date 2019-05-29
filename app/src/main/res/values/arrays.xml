@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="main_filter">
+        <item>전체</item>
+        <item>음악</item>
+        <item>영화</item>
+        <item>광고</item>
+        <item>게임</item>
+        <item>일상</item>
+        <item>요리</item>
+        <item>운동/스포츠</item>
+    </string-array>
+</resources>
